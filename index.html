@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Furnished Room Rental Agreement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .form-section {
+            scroll-margin-top: 80px;
+        }
+        .required-marker::after {
+            content: '*';
+            color: #EF4444; /* red-500 */
+            margin-left: 4px;
+        }
+        .rule-checkbox:checked + label {
+            text-decoration: line-through;
+            color: #6B7280; /* gray-500 */
+        }
+        
+        /* Form Input Styling */
+        input, select {
+            border: 1px solid #D1D5DB;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            border-color: #6366F1;
+        }
+        
+        input:invalid {
+            border-color: #EF4444;
+        }
+        
+        /* Readonly field styling */
+        input[readonly] {
+            background-color: #F9FAFB;
+            border-color: #E5E7EB;
+            color: #6B7280;
+            cursor: not-allowed;
+        }
+        
+        input[readonly]:focus {
+            box-shadow: none;
+            border-color: #E5E7EB;
+        }
+        
+        /* Enhanced Button Styling */
+        .btn-generate {
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+        }
+        
+        .btn-generate:enabled:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Preview Panel Enhancements */
+        .preview-panel {
+            border: 1px solid #E5E7EB;
+            background: linear-gradient(135deg, #F9FAFB 0%, #FFFFFF 100%);
+        }
+        
+        /* Print Styles */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-output, #print-output * {
+                visibility: visible;
+            }
+            #print-output {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                font-size: 10pt;
+                color: #1F2937 !important;
+                line-height: 1.4;
+                background: white !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            @page {
+                margin: 0.75in;
+                size: A4;
+            }
+            /* Page break controls */
+            .page-break-before {
+                page-break-before: always;
+            }
+            .page-break-after {
+                page-break-after: always;
+            }
+            .page-break-inside-avoid {
+                page-break-inside: avoid;
+            }
+            .keep-together {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            /* Ensure gradients and colors print */
+            .print-gradient {
+                background: #667EEA !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .print-card {
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+                border: 1px solid #E5E7EB !important;
+            }
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="text-center mb-8 no-print">
+            <h1 class="text-3xl font-bold text-gray-800">Online Furnished Room Rental Agreement</h1>
+            <p class="text-gray-600 mt-2">Fill in the details below to generate your furnished room rental agreement for Apartment 820, Nook 1, Jebel Ali Village, Dubai.</p>
+            
+            <!-- Notification Area -->
+            <div id="notification" class="hidden mt-4 p-4 rounded-lg">
+                <p id="notification-text"></p>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-5 gap-8">
+            
+            <!-- Form Column -->
+            <div class="lg:col-span-3 bg-white p-8 rounded-2xl shadow-lg no-print">
+                <form id="rental-form" class="space-y-8">
+                    
+                    <!-- Section 1: Landlord Details -->
+                    <div class="form-section">
+                        <h2 class="text-xl font-semibold border-b pb-3 mb-4 text-gray-700">Section 1: Landlord Details</h2>
+                        <div class="space-y-3 text-gray-600">
+                            <p><strong>Name:</strong> BAIJNATH JAISWAL</p>
+                            <p><strong>Contact:</strong> +971 55 177 1251</p>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Tenant Details -->
+                    <div class="form-section">
+                        <h2 class="text-xl font-semibold border-b pb-3 mb-6 text-gray-700">Section 2: Tenant Details</h2>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="tenant-name" class="block text-sm font-medium text-gray-700 required-marker">Full Name</label>
+                                <input type="text" id="tenant-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="tenant-id" class="block text-sm font-medium text-gray-700 required-marker">Emirates ID / Passport No.</label>
+                                <input type="text" id="tenant-id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="tenant-contact" class="block text-sm font-medium text-gray-700 required-marker">Contact Number</label>
+                                <input type="tel" id="tenant-contact" pattern="[+]?[0-9\s\-()]+" title="Please enter a valid phone number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="tenant-email" class="block text-sm font-medium text-gray-700 required-marker">Email Address</label>
+                                <input type="email" id="tenant-email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="tenant-nationality" class="block text-sm font-medium text-gray-700 required-marker">Nationality</label>
+                                <input type="text" id="tenant-nationality" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="tenant-visa-status" class="block text-sm font-medium text-gray-700 required-marker">Visa Status</label>
+                                <select id="tenant-visa-status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                                    <option value="">Select visa status</option>
+                                    <option value="Employment Visa">Employment Visa</option>
+                                    <option value="Student Visa">Student Visa</option>
+                                    <option value="Visit Visa">Visit Visa</option>
+                                    <option value="Investor Visa">Investor Visa</option>
+                                    <option value="Family Visa">Family Visa</option>
+                                    <option value="UAE National">UAE National</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Property & Lease Details -->
+                    <div class="form-section">
+                         <h2 class="text-xl font-semibold border-b pb-3 mb-6 text-gray-700">Section 3: Property & Lease Details</h2>
+                         <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="sm:col-span-2">
+                                <label for="property-location" class="block text-sm font-medium text-gray-700">Property Location</label>
+                                <input type="text" id="property-location" value="Apartment 820, Nook 1, Jebel Ali Village, Dubai" class="mt-1 block w-full rounded-md border-gray-200 bg-gray-50 text-gray-700 cursor-not-allowed" readonly>
+                                <p class="mt-1 text-xs text-gray-500">This field is pre-filled for this specific property</p>
+                            </div>
+                            <div>
+                                <label for="room-type" class="block text-sm font-medium text-gray-700 required-marker">Room Type</label>
+                                <select id="room-type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                                    <option value="">Select room type</option>
+                                    <option value="Room with Attached Toilet">Room with Attached Toilet</option>
+                                    <option value="Room without Attached Toilet">Room without Attached Toilet (Shared Bathroom)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="contract-start-date" class="block text-sm font-medium text-gray-700 required-marker">Contract Start Date</label>
+                                <input type="date" id="contract-start-date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                             <div>
+                                <label for="monthly-rent" class="block text-sm font-medium text-gray-700 required-marker">Monthly Rent (AED)</label>
+                                <input type="number" id="monthly-rent" value="3200" min="1000" max="50000" step="100" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="security-deposit" class="block text-sm font-medium text-gray-700 required-marker">Security Deposit (AED)</label>
+                                <input type="number" id="security-deposit" value="3200" min="1000" max="50000" step="100" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="additional-charges" class="block text-sm font-medium text-gray-700 required-marker">Additional Monthly Charges (AED)</label>
+                                <input type="number" id="additional-charges" value="100" min="0" max="1000" step="50" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            </div>
+                             <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Rent Inclusions</label>
+                                <div id="rent-inclusions" class="mt-2 space-y-2">
+                                    <div class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" value="DEWA (Electricity & Water)" checked><span class="ml-2 text-sm">DEWA (Electricity & Water)</span></div>
+                                    <div class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" value="High-Speed Wi-Fi Internet" checked><span class="ml-2 text-sm">High-Speed Wi-Fi Internet</span></div>
+                                    <div class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" value="Gas" checked><span class="ml-2 text-sm">Gas</span></div>
+                                    <div class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" value="Chiller/AC" checked><span class="ml-2 text-sm">Chiller/AC</span></div>
+                                    <div class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" value="Furnished Room" checked><span class="ml-2 text-sm">Furnished Room</span></div>
+                                    <div class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" value="Cleaning Service (Common Areas)"><span class="ml-2 text-sm">Cleaning Service (Common Areas)</span></div>
+                                    <div class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" value="Clean Room Service"><span class="ml-2 text-sm">Clean Room Service</span></div>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+
+                    <!-- Section 4: House Rules -->
+                    <div class="form-section">
+                        <h2 class="text-xl font-semibold border-b pb-3 mb-4 text-gray-700">Section 4: Acknowledgment of House Rules</h2>
+                        <p class="text-sm text-gray-600 mb-4">Please read and check each box to acknowledge your agreement.</p>
+                        <div id="rules-list" class="space-y-3"></div>
+                    </div>
+                    
+                    <!-- Section 5: Final Agreement -->
+                    <div class="form-section">
+                         <h2 class="text-xl font-semibold border-b pb-3 mb-4 text-gray-700">Section 5: Final Declaration</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <input id="notice-agreement" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mt-1" required>
+                                <label for="notice-agreement" class="ml-3 block text-sm text-gray-700">I understand I must provide a written notice of at least 30 days before vacating, or one month's rent will be charged in lieu.</label>
+                            </div>
+                             <div class="flex items-start">
+                                <input id="final-agreement" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mt-1" required>
+                                <label for="final-agreement" class="ml-3 block text-sm text-gray-700">By checking this box, I confirm that all information provided is accurate and I agree to all terms and conditions of this rental agreement.</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Preview Column -->
+            <div class="lg:col-span-2 lg:sticky top-8 self-start no-print">
+                <div id="preview-area" class="preview-panel bg-white p-8 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center text-gray-800">Agreement Preview</h2>
+                    <p class="text-center text-gray-500 text-sm mb-6">This summary updates as you type.</p>
+                    
+                    <div class="space-y-6 text-sm text-gray-700">
+                        <p>This agreement is made on <strong class="preview-date"></strong> between:</p>
+                        <p><strong>Landlord:</strong> BAIJNATH JAISWAL</p>
+                        <p><strong>Tenant:</strong> <strong id="preview-tenant-name">[Tenant Name]</strong> (<span id="preview-tenant-id">[ID]</span>)</p>
+                        <hr>
+                        <h3 class="font-semibold text-md text-gray-800">1. Property & Term</h3>
+                        <p>The landlord agrees to rent to the tenant a <strong id="preview-room-type">[Room Type]</strong> at <strong id="preview-property-location">[Property Location]</strong>, starting from <strong id="preview-start-date">[Start Date]</strong>.</p>
+                        <hr>
+                        <h3 class="font-semibold text-md text-gray-800">2. Financials</h3>
+                        <p>The total monthly payment is <strong>AED <span id="preview-total-monthly">[Total]</span></strong>.</p>
+                        <p>A security deposit of <strong>AED <span id="preview-security-deposit">[Deposit]</span></strong> has been paid.</p>
+                        <hr>
+                        <h3 class="font-semibold text-md text-gray-800">3. Agreement</h3>
+                        <p>The tenant acknowledges and agrees to all house rules and the 30-day notice period.</p>
+                    </div>
+
+                    <button id="generate-button" class="btn-generate w-full bg-indigo-300 text-white font-bold py-3 px-4 rounded-lg mt-8 transition-colors duration-300 cursor-not-allowed" disabled>
+                        Complete All Fields to Generate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16 no-print">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-lg font-semibold mb-4">Important Legal Notice</h3>
+            <div class="max-w-4xl mx-auto text-sm text-gray-300 space-y-2">
+                <p>This rental agreement is designed for room rentals in Dubai, UAE and complies with local tenancy laws.</p>
+                <p>Both parties should keep a copy of this agreement for their records.</p>
+                <p>For any disputes, UAE tenancy laws and Dubai Rental Dispute Center regulations apply.</p>
+                <p class="text-xs text-gray-400 mt-4">© 2024 Furnished Room Rental Agreement Generator - For Apartment 820, Nook 1, Jebel Ali Village, Dubai</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- This div is hidden and will be populated for printing -->
+    <div id="print-output" style="display: none; position: absolute; top: 0; left: 0; width: 100%; background: white; z-index: 9999;"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('rental-form');
+            const generateButton = document.getElementById('generate-button');
+            const printOutput = document.getElementById('print-output');
+            
+            const fields = {
+                tenantName: document.getElementById('tenant-name'),
+                tenantId: document.getElementById('tenant-id'),
+                tenantContact: document.getElementById('tenant-contact'),
+                tenantEmail: document.getElementById('tenant-email'),
+                tenantNationality: document.getElementById('tenant-nationality'),
+                tenantVisaStatus: document.getElementById('tenant-visa-status'),
+                propertyLocation: document.getElementById('property-location'),
+                roomType: document.getElementById('room-type'),
+                contractStartDate: document.getElementById('contract-start-date'),
+                monthlyRent: document.getElementById('monthly-rent'),
+                securityDeposit: document.getElementById('security-deposit'),
+                additionalCharges: document.getElementById('additional-charges'),
+                rentInclusions: document.getElementById('rent-inclusions'),
+                noticeAgreement: document.getElementById('notice-agreement'),
+                finalAgreement: document.getElementById('final-agreement'),
+            };
+
+            const previews = {
+                date: document.querySelector('.preview-date'),
+                tenantName: document.getElementById('preview-tenant-name'),
+                tenantId: document.getElementById('preview-tenant-id'),
+                propertyLocation: document.getElementById('preview-property-location'),
+                roomType: document.getElementById('preview-room-type'),
+                startDate: document.getElementById('preview-start-date'),
+                securityDeposit: document.getElementById('preview-security-deposit'),
+                totalMonthly: document.getElementById('preview-total-monthly'),
+            };
+
+            const houseRules = [
+                "I agree to keep noise levels low and will not host loud music or parties, especially during quiet hours (10 PM - 8 AM).",
+                "I agree to inform the landlord/coordinator in advance before having any guests over and ensure they follow all house rules.",
+                "I agree not to smoke inside the apartment, including my room, the balcony, or any common areas. Smoking is strictly prohibited.",
+                "I agree to maintain the cleanliness of my room and all shared common areas including kitchen, bathrooms, and living spaces.",
+                "I understand I am responsible for any damages I cause to the property and will bear the cost of repairs immediately.",
+                "I acknowledge that common areas are monitored by CCTV for security purposes and consent to this monitoring.",
+                "I agree to use shared kitchen appliances respectfully, clean after use, and coordinate with other flatmates.",
+                "I agree to respect other tenants' privacy and personal belongings and will not enter other tenants' rooms without permission.",
+                "I understand that subletting or allowing unauthorized persons to stay overnight is strictly prohibited.",
+                "I agree to follow all UAE laws and regulations and understand that any illegal activities will result in immediate termination.",
+                "I agree to keep common areas tidy and will participate in a cleaning rotation schedule if implemented.",
+                "I understand that excessive utility usage may result in additional charges, and I will use utilities responsibly."
+            ];
+            
+            const rulesListContainer = document.getElementById('rules-list');
+            houseRules.forEach((rule, index) => {
+                const ruleId = `rule-${index}`;
+                rulesListContainer.innerHTML += `
+                    <div class="flex items-start">
+                        <input id="${ruleId}" type="checkbox" class="rule-checkbox h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mt-1" required>
+                        <label for="${ruleId}" class="ml-3 block text-sm text-gray-700">${rule}</label>
+                    </div>`;
+            });
+            
+            const ruleCheckboxes = document.querySelectorAll('.rule-checkbox');
+
+            const formatDate = (dateString) => {
+                if (!dateString) return '[Date]';
+                try {
+                    const date = new Date(dateString + 'T00:00:00'); // Treat as local time
+                    if (isNaN(date.getTime())) return '[Invalid Date]';
+                    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                } catch (error) {
+                    console.log('Date formatting error:', error);
+                    return '[Date Error]';
+                }
+            };
+
+            const updatePreview = () => {
+                // Debug logging
+                console.log('Updating preview...');
+                console.log('Tenant name:', fields.tenantName?.value);
+                console.log('Tenant ID:', fields.tenantId?.value);
+                
+                previews.date.textContent = formatDate(new Date().toISOString().split('T')[0]);
+                previews.tenantName.textContent = fields.tenantName?.value || '[Tenant Name]';
+                previews.tenantId.textContent = fields.tenantId?.value || '[ID]';
+                previews.propertyLocation.textContent = fields.propertyLocation?.value || 'Apartment 820, Nook 1, Jebel Ali Village, Dubai';
+                previews.roomType.textContent = fields.roomType?.value || '[Room Type]';
+                previews.startDate.textContent = formatDate(fields.contractStartDate?.value);
+                
+                const rent = parseFloat(fields.monthlyRent?.value) || 0;
+                const charges = parseFloat(fields.additionalCharges?.value) || 0;
+                previews.securityDeposit.textContent = fields.securityDeposit?.value || '[Deposit]';
+                previews.totalMonthly.textContent = (rent + charges) || '[Total]';
+                
+                console.log('Preview updated');
+            };
+            
+            const validateForm = () => {
+                let isValid = form.checkValidity();
+                if (isValid) {
+                    generateButton.disabled = false;
+                    generateButton.textContent = 'Generate & Print Agreement';
+                    generateButton.classList.remove('bg-indigo-300', 'cursor-not-allowed');
+                    generateButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                } else {
+                    generateButton.disabled = true;
+                    generateButton.textContent = 'Complete All Fields to Generate';
+                    generateButton.classList.add('bg-indigo-300', 'cursor-not-allowed');
+                    generateButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                }
+            };
+
+            const generatePrintableAgreement = () => {
+                // Debug logging
+                console.log('Generating printable agreement...');
+                console.log('Fields:', fields);
+                
+                const rent = parseFloat(fields.monthlyRent?.value) || 0;
+                const charges = parseFloat(fields.additionalCharges?.value) || 0;
+                const total = rent + charges;
+                const includedItems = Array.from(fields.rentInclusions?.querySelectorAll('input:checked') || []).map(cb => `<div style="display: flex; align-items: center; margin-bottom: 0.3rem;"><span style="color: #10B981; margin-right: 0.5rem; font-weight: bold;">✓</span><span>${cb.value}</span></div>`).join('');
+                const agreedRules = houseRules.map((rule, index) => `<div style="display: flex; margin-bottom: 0.5rem;"><span style="color: #6366F1; margin-right: 0.5rem; font-weight: bold; min-width: 1.5rem;">${index + 1}.</span><span>${rule.replace('I agree to ', '').replace('I understand ', '').replace('I acknowledge that ', '')}</span></div>`).join('');
+
+                // Ensure we have values
+                const tenantName = fields.tenantName?.value || 'N/A';
+                const tenantId = fields.tenantId?.value || 'N/A';
+                const tenantNationality = fields.tenantNationality?.value || 'N/A';
+                const tenantVisaStatus = fields.tenantVisaStatus?.value || 'N/A';
+                const tenantContact = fields.tenantContact?.value || 'N/A';
+                const tenantEmail = fields.tenantEmail?.value || 'N/A';
+                const roomType = fields.roomType?.value || 'N/A';
+                const propertyLocation = fields.propertyLocation?.value || 'Apartment 820, Nook 1, Jebel Ali Village, Dubai';
+                const contractStartDate = fields.contractStartDate?.value || '';
+                const securityDeposit = parseFloat(fields.securityDeposit?.value) || 0;
+
+                console.log('Data prepared for printing:', {
+                    tenantName, tenantId, roomType, total, securityDeposit
+                });
+
+                const content = `
+                    <div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 100%; margin: 0; background: white; color: #1F2937; line-height: 1.4; font-size: 10pt;">
+                        
+                        <!-- Page 1: Header and Basic Info -->
+                        <div class="keep-together" style="min-height: 40vh;">
+                            <!-- Header Section -->
+                            <div style="background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%); padding: 1.5rem; text-align: center; margin-bottom: 1.5rem; border-radius: 0;">
+                                <h1 style="color: white; font-size: 2rem; font-weight: 700; margin: 0; letter-spacing: -0.02em;">Furnished Room Rental Agreement</h1>
+                                <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 25px; display: inline-block; margin-top: 0.75rem;">
+                                    <p style="color: white; margin: 0; font-weight: 500; font-size: 0.9rem;">Agreement Date: ${formatDate(new Date().toISOString().split('T')[0])}</p>
+                                </div>
+                            </div>
+
+                            <!-- Property Information Card -->
+                            <div class="keep-together" style="background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #6366F1;">
+                                <h3 style="color: #374151; font-size: 1rem; font-weight: 600; margin: 0 0 0.25rem 0;">📍 Property Location</h3>
+                                <p style="color: #6B7280; margin: 0; font-size: 0.95rem; font-weight: 500;">${propertyLocation}</p>
+                                <p style="color: #6366F1; margin: 0.25rem 0 0 0; font-weight: 600; font-size: 0.9rem;">${roomType}</p>
+                            </div>
+
+                            <!-- Parties Section -->
+                            <div class="keep-together" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border: 1px solid #E2E8F0;">
+                                    <h3 style="color: #1E293B; font-size: 0.95rem; font-weight: 600; margin: 0 0 0.75rem 0; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">🏠</span>Landlord</h3>
+                                    <div>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Name:</strong> BAIJNATH JAISWAL</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Contact:</strong> +971 55 177 1251</p>
+                                    </div>
+                                </div>
+                                <div style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border: 1px solid #E2E8F0;">
+                                    <h3 style="color: #1E293B; font-size: 0.95rem; font-weight: 600; margin: 0 0 0.75rem 0; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">👤</span>Tenant</h3>
+                                    <div>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Name:</strong> ${tenantName}</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>ID:</strong> ${tenantId}</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Nationality:</strong> ${tenantNationality}</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Visa:</strong> ${tenantVisaStatus}</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Contact:</strong> ${tenantContact}</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Email:</strong> ${tenantEmail}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Financial Summary Card -->
+                        <div class="keep-together" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; color: white;">
+                            <h3 style="color: white; font-size: 1.1rem; font-weight: 600; margin: 0 0 0.75rem 0; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">💰</span>Financial Summary</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem;">
+                                <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 6px;">
+                                    <p style="margin: 0; font-size: 0.8rem; opacity: 0.9;">Monthly Rent</p>
+                                    <p style="margin: 0; font-size: 1.2rem; font-weight: 700;">AED ${rent.toFixed(2)}</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 6px;">
+                                    <p style="margin: 0; font-size: 0.8rem; opacity: 0.9;">Additional Charges</p>
+                                    <p style="margin: 0; font-size: 1.2rem; font-weight: 700;">AED ${charges.toFixed(2)}</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.3); padding: 0.75rem; border-radius: 6px; border: 2px solid rgba(255,255,255,0.5);">
+                                    <p style="margin: 0; font-size: 0.8rem; opacity: 0.9;">Total Monthly</p>
+                                    <p style="margin: 0; font-size: 1.2rem; font-weight: 700;">AED ${total.toFixed(2)}</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 6px;">
+                                    <p style="margin: 0; font-size: 0.8rem; opacity: 0.9;">Security Deposit</p>
+                                    <p style="margin: 0; font-size: 1.2rem; font-weight: 700;">AED ${securityDeposit.toFixed(2)}</p>
+                                </div>
+                            </div>
+                            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.3);">
+                                <p style="margin: 0 0 0.5rem 0; font-weight: 600; font-size: 0.9rem;">✨ Included Services:</p>
+                                <div style="margin-left: 0.5rem; font-size: 0.85rem;">${includedItems}</div>
+                            </div>
+                        </div>
+
+                        <!-- Page Break Before Terms -->
+                        <div class="page-break-before"></div>
+
+                        <!-- Page 2: Terms Section -->
+                        <div style="margin-bottom: 1.5rem;">
+                            <h3 style="color: #1E293B; font-size: 1.1rem; font-weight: 600; margin: 0 0 0.75rem 0; padding-bottom: 0.25rem; border-bottom: 2px solid #E2E8F0;">📋 Agreement Terms</h3>
+                            
+                            <div class="keep-together" style="background: #FFFBEB; border-left: 4px solid #F59E0B; padding: 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+                                <h4 style="color: #92400E; margin: 0 0 0.25rem 0; font-weight: 600; font-size: 0.9rem;">🏠 Property & Tenancy</h4>
+                                <p style="color: #78350F; margin: 0; font-size: 0.85rem;">This agreement commences on <strong>${formatDate(contractStartDate)}</strong> for the rental of a ${roomType} with access to shared common areas. The tenancy is month-to-month and renewable upon mutual agreement.</p>
+                            </div>
+
+                            <div class="keep-together" style="background: #EFF6FF; border-left: 4px solid #3B82F6; padding: 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+                                <h4 style="color: #1E40AF; margin: 0 0 0.25rem 0; font-weight: 600; font-size: 0.9rem;">💳 Payment Terms</h4>
+                                <p style="color: #1E3A8A; margin: 0; font-size: 0.85rem;">Monthly payment of <strong>AED ${total.toFixed(2)}</strong> is due on the 1st of each month. Security deposit is refundable within 30 days after tenancy termination, subject to property condition assessment.</p>
+                            </div>
+
+                            <div class="keep-together" style="background: #F0F9FF; border-left: 4px solid #0EA5E9; padding: 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+                                <h4 style="color: #0C4A6E; margin: 0 0 0.25rem 0; font-weight: 600; font-size: 0.9rem;">⏰ Notice Period</h4>
+                                <p style="color: #075985; margin: 0; font-size: 0.85rem;">Either party must provide <strong>30 days written notice</strong> before termination. Failure to provide adequate notice may result in forfeiture of deposit equivalent to one month's rent.</p>
+                            </div>
+                        </div>
+
+                        <!-- House Rules -->
+                        <div class="keep-together" style="margin-bottom: 1.5rem;">
+                            <h3 style="color: #1E293B; font-size: 1.1rem; font-weight: 600; margin: 0 0 0.75rem 0; padding-bottom: 0.25rem; border-bottom: 2px solid #E2E8F0;">🏡 House Rules & Conditions</h3>
+                            <div style="background: #FAFAFA; padding: 1rem; border-radius: 8px; border: 1px solid #E5E7EB;">
+                                <p style="color: #6B7280; margin: 0 0 0.75rem 0; font-style: italic; font-size: 0.85rem;">The tenant acknowledges and agrees to comply with the following house rules:</p>
+                                <div style="margin-left: 0; font-size: 0.8rem;">${agreedRules}</div>
+                            </div>
+                        </div>
+
+                        <!-- Page Break Before Legal -->
+                        <div class="page-break-before"></div>
+
+                        <!-- Page 3: Legal and Signatures -->
+                        <!-- Legal Compliance -->
+                        <div class="keep-together" style="background: #F1F5F9; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #CBD5E1;">
+                            <h3 style="color: #334155; font-size: 0.95rem; font-weight: 600; margin: 0 0 0.5rem 0;">⚖️ Legal Compliance</h3>
+                            <p style="color: #64748B; margin: 0; font-size: 0.8rem;">This digital agreement complies with UAE Electronic Transactions Law and Dubai tenancy regulations. Both parties acknowledge this constitutes a legally binding agreement completed on ${formatDate(new Date().toISOString().split('T')[0])} at ${new Date().toLocaleTimeString()}.</p>
+                        </div>
+
+                        <!-- Additional Terms -->
+                        <div class="keep-together" style="margin-bottom: 2rem;">
+                            <h3 style="color: #1E293B; font-size: 1rem; font-weight: 600; margin: 0 0 0.75rem 0; padding-bottom: 0.25rem; border-bottom: 1px solid #E2E8F0;">📝 Additional Terms</h3>
+                            <div style="font-size: 0.8rem; line-height: 1.3;">
+                                <p style="margin: 0.5rem 0; color: #374151;"><strong>Maintenance:</strong> Minor maintenance issues should be reported immediately. Major repairs will be handled by the landlord.</p>
+                                <p style="margin: 0.5rem 0; color: #374151;"><strong>Keys & Access:</strong> Tenant will receive one set of keys. Lost keys will be replaced at tenant's expense (AED 200).</p>
+                                <p style="margin: 0.5rem 0; color: #374151;"><strong>Insurance:</strong> Tenant is advised to obtain personal contents insurance. Landlord is not liable for personal belongings.</p>
+                                <p style="margin: 0.5rem 0; color: #374151;"><strong>Compliance:</strong> This agreement complies with UAE tenancy laws and Dubai Municipality regulations.</p>
+                            </div>
+                        </div>
+
+                        <!-- Signature Section -->
+                        <div class="keep-together" style="background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <h3 style="color: #1E293B; font-size: 1rem; font-weight: 600; margin: 0 0 1.5rem 0; text-align: center;">✍️ Digital Signatures</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                                <div style="text-align: center;">
+                                    <div style="border-top: 2px solid #374151; padding-top: 0.75rem; margin-bottom: 0.5rem;">
+                                        <p style="margin: 0; font-weight: 600; color: #374151; font-size: 0.9rem;">Landlord/Coordinator</p>
+                                        <p style="margin: 0.25rem 0; color: #6B7280; font-size: 0.85rem;">BAIJNATH JAISWAL</p>
+                                    </div>
+                                    <p style="margin: 0.75rem 0 0 0; color: #9CA3AF; font-size: 0.8rem;">Date: _______________</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="border-top: 2px solid #374151; padding-top: 0.75rem; margin-bottom: 0.5rem;">
+                                        <p style="margin: 0; font-weight: 600; color: #374151; font-size: 0.9rem;">Tenant</p>
+                                        <p style="margin: 0.25rem 0; color: #6B7280; font-size: 0.85rem;">${tenantName}</p>
+                                    </div>
+                                    <p style="margin: 0.75rem 0 0 0; color: #9CA3AF; font-size: 0.8rem;">Date: _______________</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div style="background: #1F2937; color: white; text-align: center; padding: 1rem; margin-top: 1rem;">
+                            <p style="margin: 0; font-size: 0.8rem; opacity: 0.8;">Furnished Room Rental Agreement • Apartment 820, Nook 1, Jebel Ali Village, Dubai</p>
+                        </div>
+                    </div>
+                `;
+                printOutput.innerHTML = content;
+                console.log('Print content generated:', content.substring(0, 200) + '...');
+            };
+
+            form.addEventListener('input', () => {
+                updatePreview();
+                validateForm();
+            });
+            
+            form.addEventListener('change', () => {
+                updatePreview();
+                validateForm();
+            });
+
+            generateButton.addEventListener('click', () => {
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    showNotification('Please fill in all required fields.', 'error');
+                    return;
+                }
+                
+                console.log('Generate button clicked');
+                generatePrintableAgreement();
+                
+                // Show the print output temporarily to verify content
+                printOutput.style.display = 'block';
+                printOutput.style.visibility = 'visible';
+                
+                showNotification('Agreement generated successfully! Print dialog will open automatically.', 'success');
+                
+                setTimeout(() => {
+                    console.log('Opening print dialog...');
+                    window.print();
+                    
+                    // Hide again after printing
+                    setTimeout(() => {
+                        printOutput.style.display = 'none';
+                    }, 100);
+                }, 1000);
+            });
+
+            // Notification function
+            const showNotification = (message, type) => {
+                const notification = document.getElementById('notification');
+                const notificationText = document.getElementById('notification-text');
+                
+                notificationText.textContent = message;
+                notification.className = `mt-4 p-4 rounded-lg ${type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`;
+                notification.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 5000);
+            };
+
+            // Initial calls
+            console.log('Initializing form...');
+            console.log('Fields found:', {
+                tenantName: !!fields.tenantName,
+                tenantId: !!fields.tenantId,
+                roomType: !!fields.roomType
+            });
+            updatePreview();
+            validateForm();
+
+            // Force update preview after a short delay to ensure DOM is ready
+            setTimeout(() => {
+                console.log('Force updating preview...');
+                updatePreview();
+            }, 100);
+        });
+    </script>
+
+</body>
+</html>
