@@ -60,17 +60,75 @@
             font-weight: 600;
             padding: 12px 24px;
             border-radius: 8px;
+            position: relative;
+            overflow: hidden;
         }
         
         .btn-generate:enabled:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-generate:enabled:active {
+            transform: translateY(0);
         }
         
         /* Preview Panel Enhancements */
         .preview-panel {
             border: 1px solid #E5E7EB;
             background: linear-gradient(135deg, #F9FAFB 0%, #FFFFFF 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .preview-panel:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Animated elements */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-slide-in {
+            animation: slideInUp 0.5s ease-out;
+        }
+        
+        /* Progress bar animation */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Status indicator animations */
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .status-check {
+            animation: checkmark 0.6s ease-out;
         }
         
         /* Print Styles */
@@ -278,29 +336,113 @@
 
             <!-- Preview Column -->
             <div class="lg:col-span-2 lg:sticky top-8 self-start no-print">
-                <div id="preview-area" class="preview-panel bg-white p-8 rounded-2xl shadow-lg">
-                    <h2 class="text-2xl font-bold text-center text-gray-800">Agreement Preview</h2>
-                    <p class="text-center text-gray-500 text-sm mb-6">This summary updates as you type.</p>
-                    
-                    <div class="space-y-6 text-sm text-gray-700">
-                        <p>This agreement is made on <strong class="preview-date"></strong> between:</p>
-                        <p><strong>Landlord:</strong> BAIJNATH JAISWAL</p>
-                        <p><strong>Tenant:</strong> <strong id="preview-tenant-name">[Tenant Name]</strong> (<span id="preview-tenant-id">[ID]</span>)</p>
-                        <hr>
-                        <h3 class="font-semibold text-md text-gray-800">1. Property & Term</h3>
-                        <p>The landlord agrees to rent to the tenant a <strong id="preview-room-type">[Room Type]</strong> at <strong id="preview-property-location">[Property Location]</strong>, starting from <strong id="preview-start-date">[Start Date]</strong>.</p>
-                        <hr>
-                        <h3 class="font-semibold text-md text-gray-800">2. Financials</h3>
-                        <p>The total monthly payment is <strong>AED <span id="preview-total-monthly">[Total]</span></strong>.</p>
-                        <p>A security deposit of <strong>AED <span id="preview-security-deposit">[Deposit]</span></strong> has been paid.</p>
-                        <hr>
-                        <h3 class="font-semibold text-md text-gray-800">3. Agreement</h3>
-                        <p>The tenant acknowledges and agrees to all house rules and the 30-day notice period.</p>
+                <div id="preview-area" class="preview-panel bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <!-- Header Section -->
+                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white">
+                        <h2 class="text-2xl font-bold text-center">Agreement Preview</h2>
+                        <p class="text-center text-indigo-100 text-sm mt-2">Live updates as you fill the form</p>
+                        
+                        <!-- Progress Indicator -->
+                        <div class="mt-4">
+                            <div class="flex justify-between text-xs mb-2">
+                                <span>Form Completion</span>
+                                <span id="progress-percentage">0%</span>
+                            </div>
+                            <div class="w-full bg-indigo-800 rounded-full h-2">
+                                <div id="progress-bar" class="bg-white h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <!-- Content Section -->
+                    <div class="p-6 space-y-6">
+                        <!-- Agreement Date -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-center text-gray-700">Agreement Date: <strong class="preview-date text-indigo-600"></strong></p>
+                        </div>
 
-                    <button id="generate-button" class="btn-generate w-full bg-indigo-300 text-white font-bold py-3 px-4 rounded-lg mt-8 transition-colors duration-300 cursor-not-allowed" disabled>
-                        Complete All Fields to Generate
-                    </button>
+                        <!-- Parties Section -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                <h3 class="font-semibold text-blue-800 mb-2">🏠 Landlord</h3>
+                                <p class="text-sm text-gray-700"><strong>Name:</strong> BAIJNATH JAISWAL</p>
+                                <p class="text-sm text-gray-700"><strong>Contact:</strong> +971 55 177 1251</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                <h3 class="font-semibold text-green-800 mb-2">👤 Tenant</h3>
+                                <p class="text-sm text-gray-700"><strong>Name:</strong> <span id="preview-tenant-name" class="font-medium">[Tenant Name]</span></p>
+                                <p class="text-sm text-gray-700"><strong>ID:</strong> <span id="preview-tenant-id">[ID Number]</span></p>
+                                <p class="text-sm text-gray-700"><strong>Contact:</strong> <span id="preview-tenant-contact">[Contact]</span></p>
+                                <p class="text-sm text-gray-700"><strong>Email:</strong> <span id="preview-tenant-email">[Email]</span></p>
+                                <p class="text-sm text-gray-700"><strong>Nationality:</strong> <span id="preview-tenant-nationality">[Nationality]</span></p>
+                                <p class="text-sm text-gray-700"><strong>Visa:</strong> <span id="preview-tenant-visa">[Visa Status]</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Property Details -->
+                        <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                            <h3 class="font-semibold text-purple-800 mb-3">📍 Property Details</h3>
+                            <p class="text-sm text-gray-700 mb-2"><strong>Location:</strong> <span id="preview-property-location">Apartment 820, Nook 1, Jebel Ali Village, Dubai</span></p>
+                            <p class="text-sm text-gray-700 mb-2"><strong>Room Type:</strong> <span id="preview-room-type" class="font-medium">[Room Type]</span></p>
+                            <p class="text-sm text-gray-700"><strong>Start Date:</strong> <span id="preview-start-date" class="font-medium">[Start Date]</span></p>
+                        </div>
+
+                        <!-- Financial Summary -->
+                        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-lg border border-emerald-200">
+                            <h3 class="font-semibold text-emerald-800 mb-3">💰 Financial Summary</h3>
+                            <div class="grid grid-cols-2 gap-3 text-sm">
+                                <div class="bg-white p-3 rounded border">
+                                    <p class="text-gray-600">Monthly Rent</p>
+                                    <p class="font-bold text-lg text-emerald-600">AED <span id="preview-monthly-rent">3,200</span></p>
+                                </div>
+                                <div class="bg-white p-3 rounded border">
+                                    <p class="text-gray-600">Additional Charges</p>
+                                    <p class="font-bold text-lg text-blue-600">AED <span id="preview-additional-charges">100</span></p>
+                                </div>
+                                <div class="bg-emerald-100 p-3 rounded border border-emerald-300">
+                                    <p class="text-gray-700 font-medium">Total Monthly</p>
+                                    <p class="font-bold text-xl text-emerald-700">AED <span id="preview-total-monthly">3,300</span></p>
+                                </div>
+                                <div class="bg-white p-3 rounded border">
+                                    <p class="text-gray-600">Security Deposit</p>
+                                    <p class="font-bold text-lg text-orange-600">AED <span id="preview-security-deposit">3,200</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inclusions -->
+                        <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                            <h3 class="font-semibold text-yellow-800 mb-3">✨ Included Services</h3>
+                            <div id="preview-inclusions" class="text-sm text-gray-700">
+                                <p class="text-gray-500 italic">Select services from the form...</p>
+                            </div>
+                        </div>
+
+                        <!-- Agreement Status -->
+                        <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500">
+                            <h3 class="font-semibold text-indigo-800 mb-3">📋 Agreement Status</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <span id="rules-status-icon" class="w-4 h-4 mr-2">⏳</span>
+                                    <span>House Rules: <span id="rules-status" class="font-medium">Pending acknowledgment</span></span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span id="notice-status-icon" class="w-4 h-4 mr-2">⏳</span>
+                                    <span>30-Day Notice: <span id="notice-status" class="font-medium">Pending agreement</span></span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span id="final-status-icon" class="w-4 h-4 mr-2">⏳</span>
+                                    <span>Final Declaration: <span id="final-status" class="font-medium">Pending confirmation</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button id="generate-button" class="btn-generate w-full bg-indigo-300 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 cursor-not-allowed transform" disabled>
+                            <span id="button-text">Complete All Fields to Generate</span>
+                            <span id="button-icon" class="ml-2">🔒</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -350,11 +492,28 @@
                 date: document.querySelector('.preview-date'),
                 tenantName: document.getElementById('preview-tenant-name'),
                 tenantId: document.getElementById('preview-tenant-id'),
+                tenantContact: document.getElementById('preview-tenant-contact'),
+                tenantEmail: document.getElementById('preview-tenant-email'),
+                tenantNationality: document.getElementById('preview-tenant-nationality'),
+                tenantVisa: document.getElementById('preview-tenant-visa'),
                 propertyLocation: document.getElementById('preview-property-location'),
                 roomType: document.getElementById('preview-room-type'),
                 startDate: document.getElementById('preview-start-date'),
+                monthlyRent: document.getElementById('preview-monthly-rent'),
+                additionalCharges: document.getElementById('preview-additional-charges'),
                 securityDeposit: document.getElementById('preview-security-deposit'),
                 totalMonthly: document.getElementById('preview-total-monthly'),
+                inclusions: document.getElementById('preview-inclusions'),
+                rulesStatus: document.getElementById('rules-status'),
+                rulesStatusIcon: document.getElementById('rules-status-icon'),
+                noticeStatus: document.getElementById('notice-status'),
+                noticeStatusIcon: document.getElementById('notice-status-icon'),
+                finalStatus: document.getElementById('final-status'),
+                finalStatusIcon: document.getElementById('final-status-icon'),
+                progressBar: document.getElementById('progress-bar'),
+                progressPercentage: document.getElementById('progress-percentage'),
+                buttonText: document.getElementById('button-text'),
+                buttonIcon: document.getElementById('button-icon'),
             };
 
             const houseRules = [
@@ -397,38 +556,162 @@
             };
 
             const updatePreview = () => {
-                // Debug logging
-                console.log('Updating preview...');
-                console.log('Tenant name:', fields.tenantName?.value);
-                console.log('Tenant ID:', fields.tenantId?.value);
-                
+                // Update basic information
                 previews.date.textContent = formatDate(new Date().toISOString().split('T')[0]);
+                
+                // Update tenant information
                 previews.tenantName.textContent = fields.tenantName?.value || '[Tenant Name]';
-                previews.tenantId.textContent = fields.tenantId?.value || '[ID]';
+                previews.tenantId.textContent = fields.tenantId?.value || '[ID Number]';
+                previews.tenantContact.textContent = fields.tenantContact?.value || '[Contact]';
+                previews.tenantEmail.textContent = fields.tenantEmail?.value || '[Email]';
+                previews.tenantNationality.textContent = fields.tenantNationality?.value || '[Nationality]';
+                previews.tenantVisa.textContent = fields.tenantVisaStatus?.value || '[Visa Status]';
+                
+                // Update property information
                 previews.propertyLocation.textContent = fields.propertyLocation?.value || 'Apartment 820, Nook 1, Jebel Ali Village, Dubai';
                 previews.roomType.textContent = fields.roomType?.value || '[Room Type]';
                 previews.startDate.textContent = formatDate(fields.contractStartDate?.value);
                 
+                // Update financial information with formatting
                 const rent = parseFloat(fields.monthlyRent?.value) || 0;
                 const charges = parseFloat(fields.additionalCharges?.value) || 0;
-                previews.securityDeposit.textContent = fields.securityDeposit?.value || '[Deposit]';
-                previews.totalMonthly.textContent = (rent + charges) || '[Total]';
+                const deposit = parseFloat(fields.securityDeposit?.value) || 0;
+                const total = rent + charges;
                 
-                console.log('Preview updated');
+                previews.monthlyRent.textContent = rent.toLocaleString();
+                previews.additionalCharges.textContent = charges.toLocaleString();
+                previews.securityDeposit.textContent = deposit.toLocaleString();
+                previews.totalMonthly.textContent = total.toLocaleString();
+                
+                // Update inclusions
+                const checkedInclusions = Array.from(fields.rentInclusions?.querySelectorAll('input:checked') || []);
+                if (checkedInclusions.length > 0) {
+                    const inclusionsList = checkedInclusions.map(cb => 
+                        `<div class="flex items-center mb-1"><span class="text-green-500 mr-2">✓</span><span>${cb.value}</span></div>`
+                    ).join('');
+                    previews.inclusions.innerHTML = inclusionsList;
+                } else {
+                    previews.inclusions.innerHTML = '<p class="text-gray-500 italic">No services selected</p>';
+                }
+                
+                // Update rule status
+                const ruleCheckboxes = document.querySelectorAll('.rule-checkbox');
+                const checkedRules = Array.from(ruleCheckboxes).filter(cb => cb.checked);
+                const rulesProgress = checkedRules.length;
+                const totalRules = ruleCheckboxes.length;
+                
+                if (rulesProgress === totalRules && totalRules > 0) {
+                    previews.rulesStatus.textContent = `All ${totalRules} rules acknowledged`;
+                    previews.rulesStatus.className = 'font-medium text-green-600';
+                    previews.rulesStatusIcon.textContent = '✅';
+                } else if (rulesProgress > 0) {
+                    previews.rulesStatus.textContent = `${rulesProgress}/${totalRules} rules acknowledged`;
+                    previews.rulesStatus.className = 'font-medium text-yellow-600';
+                    previews.rulesStatusIcon.textContent = '⏳';
+                } else {
+                    previews.rulesStatus.textContent = 'Pending acknowledgment';
+                    previews.rulesStatus.className = 'font-medium text-gray-600';
+                    previews.rulesStatusIcon.textContent = '⏳';
+                }
+                
+                // Update notice agreement status
+                if (fields.noticeAgreement?.checked) {
+                    previews.noticeStatus.textContent = 'Agreed to 30-day notice';
+                    previews.noticeStatus.className = 'font-medium text-green-600';
+                    previews.noticeStatusIcon.textContent = '✅';
+                } else {
+                    previews.noticeStatus.textContent = 'Pending agreement';
+                    previews.noticeStatus.className = 'font-medium text-gray-600';
+                    previews.noticeStatusIcon.textContent = '⏳';
+                }
+                
+                // Update final agreement status
+                if (fields.finalAgreement?.checked) {
+                    previews.finalStatus.textContent = 'Final declaration confirmed';
+                    previews.finalStatus.className = 'font-medium text-green-600';
+                    previews.finalStatusIcon.textContent = '✅';
+                } else {
+                    previews.finalStatus.textContent = 'Pending confirmation';
+                    previews.finalStatus.className = 'font-medium text-gray-600';
+                    previews.finalStatusIcon.textContent = '⏳';
+                }
+                
+                // Calculate and update progress
+                updateProgressBar();
+            };
+            
+            const updateProgressBar = () => {
+                const requiredFields = [
+                    fields.tenantName,
+                    fields.tenantId,
+                    fields.tenantContact,
+                    fields.tenantEmail,
+                    fields.tenantNationality,
+                    fields.tenantVisaStatus,
+                    fields.roomType,
+                    fields.contractStartDate,
+                    fields.monthlyRent,
+                    fields.securityDeposit,
+                    fields.additionalCharges,
+                ];
+                
+                let filledFields = 0;
+                requiredFields.forEach(field => {
+                    if (field && field.value && field.value.trim() !== '') {
+                        filledFields++;
+                    }
+                });
+                
+                // Add rule checkboxes to progress
+                const ruleCheckboxes = document.querySelectorAll('.rule-checkbox');
+                const checkedRules = Array.from(ruleCheckboxes).filter(cb => cb.checked).length;
+                const totalRules = ruleCheckboxes.length;
+                
+                // Add final agreements
+                const noticeAgreed = fields.noticeAgreement?.checked ? 1 : 0;
+                const finalAgreed = fields.finalAgreement?.checked ? 1 : 0;
+                
+                // Calculate total progress
+                const totalRequiredItems = requiredFields.length + 1 + 1 + 1; // fields + rules + notice + final
+                const completedItems = filledFields + (checkedRules === totalRules && totalRules > 0 ? 1 : 0) + noticeAgreed + finalAgreed;
+                
+                const progressPercentage = Math.round((completedItems / totalRequiredItems) * 100);
+                
+                // Update progress bar
+                previews.progressBar.style.width = `${progressPercentage}%`;
+                previews.progressPercentage.textContent = `${progressPercentage}%`;
+                
+                // Update progress bar color based on completion
+                if (progressPercentage === 100) {
+                    previews.progressBar.className = 'bg-green-400 h-2 rounded-full transition-all duration-500';
+                } else if (progressPercentage >= 75) {
+                    previews.progressBar.className = 'bg-yellow-400 h-2 rounded-full transition-all duration-500';
+                } else {
+                    previews.progressBar.className = 'bg-white h-2 rounded-full transition-all duration-500';
+                }
             };
             
             const validateForm = () => {
                 let isValid = form.checkValidity();
+                
+                // Check if all rule checkboxes are checked
+                const ruleCheckboxes = document.querySelectorAll('.rule-checkbox');
+                const allRulesChecked = Array.from(ruleCheckboxes).every(cb => cb.checked);
+                
+                isValid = isValid && allRulesChecked;
+                
                 if (isValid) {
                     generateButton.disabled = false;
-                    generateButton.textContent = 'Generate & Print Agreement';
+                    previews.buttonText.textContent = 'Generate & Print Agreement';
+                    previews.buttonIcon.textContent = '🚀';
                     generateButton.classList.remove('bg-indigo-300', 'cursor-not-allowed');
-                    generateButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                    generateButton.classList.add('bg-gradient-to-r', 'from-indigo-600', 'to-purple-600', 'hover:from-indigo-700', 'hover:to-purple-700', 'hover:scale-105');
                 } else {
                     generateButton.disabled = true;
-                    generateButton.textContent = 'Complete All Fields to Generate';
+                    previews.buttonText.textContent = 'Complete All Fields to Generate';
+                    previews.buttonIcon.textContent = '🔒';
                     generateButton.classList.add('bg-indigo-300', 'cursor-not-allowed');
-                    generateButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                    generateButton.classList.remove('bg-gradient-to-r', 'from-indigo-600', 'to-purple-600', 'hover:from-indigo-700', 'hover:to-purple-700', 'hover:scale-105');
                 }
             };
 
@@ -616,12 +899,100 @@
             form.addEventListener('input', () => {
                 updatePreview();
                 validateForm();
+                
+                // Add animation to preview panel when data changes
+                const previewArea = document.getElementById('preview-area');
+                previewArea.classList.add('animate-slide-in');
+                setTimeout(() => {
+                    previewArea.classList.remove('animate-slide-in');
+                }, 500);
             });
             
             form.addEventListener('change', () => {
                 updatePreview();
                 validateForm();
             });
+            
+            // Add real-time formatting for number inputs
+            fields.monthlyRent.addEventListener('input', (e) => {
+                const value = parseInt(e.target.value) || 0;
+                if (value > 0) {
+                    previews.monthlyRent.textContent = value.toLocaleString();
+                }
+            });
+            
+            fields.additionalCharges.addEventListener('input', (e) => {
+                const value = parseInt(e.target.value) || 0;
+                previews.additionalCharges.textContent = value.toLocaleString();
+            });
+            
+            fields.securityDeposit.addEventListener('input', (e) => {
+                const value = parseInt(e.target.value) || 0;
+                if (value > 0) {
+                    previews.securityDeposit.textContent = value.toLocaleString();
+                }
+            });
+            
+            // Add status change animations
+            const observeStatusChanges = () => {
+                const statusElements = [
+                    previews.rulesStatusIcon,
+                    previews.noticeStatusIcon,
+                    previews.finalStatusIcon
+                ];
+                
+                statusElements.forEach(element => {
+                    const observer = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                                if (element.textContent === '✅') {
+                                    element.classList.add('status-check');
+                                    setTimeout(() => {
+                                        element.classList.remove('status-check');
+                                    }, 600);
+                                }
+                            }
+                        });
+                    });
+                    
+                    observer.observe(element, {
+                        childList: true,
+                        characterData: true,
+                        subtree: true
+                    });
+                });
+            };
+            
+            // Enhanced error handling and user feedback
+            const addFieldValidationFeedback = () => {
+                const requiredFields = [
+                    fields.tenantName,
+                    fields.tenantId,
+                    fields.tenantContact,
+                    fields.tenantEmail,
+                    fields.tenantNationality,
+                    fields.tenantVisaStatus,
+                    fields.roomType,
+                    fields.contractStartDate,
+                ];
+                
+                requiredFields.forEach(field => {
+                    if (field) {
+                        field.addEventListener('blur', () => {
+                            if (field.required && !field.value.trim()) {
+                                field.classList.add('border-red-500', 'bg-red-50');
+                                setTimeout(() => {
+                                    field.classList.remove('border-red-500', 'bg-red-50');
+                                }, 2000);
+                            }
+                        });
+                        
+                        field.addEventListener('focus', () => {
+                            field.classList.remove('border-red-500', 'bg-red-50');
+                        });
+                    }
+                });
+            };
 
             generateButton.addEventListener('click', () => {
                 if (!form.checkValidity()) {
@@ -665,19 +1036,17 @@
             };
 
             // Initial calls
-            console.log('Initializing form...');
-            console.log('Fields found:', {
-                tenantName: !!fields.tenantName,
-                tenantId: !!fields.tenantId,
-                roomType: !!fields.roomType
-            });
+            console.log('Initializing enhanced form...');
             updatePreview();
             validateForm();
+            observeStatusChanges();
+            addFieldValidationFeedback();
 
             // Force update preview after a short delay to ensure DOM is ready
             setTimeout(() => {
                 console.log('Force updating preview...');
                 updatePreview();
+                validateForm();
             }, 100);
         });
     </script>
