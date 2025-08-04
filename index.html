@@ -398,6 +398,67 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
         
+        /* Privacy Protection Styles */
+        .privacy-toggle {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .privacy-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+        
+        .privacy-toggle:active {
+            transform: translateY(0);
+        }
+        
+        .privacy-content {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .privacy-hidden {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            border: 1px dashed #d1d5db;
+        }
+        
+        .privacy-revealed {
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            border: 1px solid #d1fae5;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .privacy-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .privacy-toggle:hover .privacy-icon {
+            transform: scale(1.1);
+        }
+        
         .text-white-shadow {
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
@@ -590,9 +651,12 @@
                                 </div>
                                 <div class="flex items-center space-x-4 p-4 bg-green-50 rounded-lg border border-green-200">
                                     <div class="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
-                                    <div>
+                                    <div class="flex-1">
                                         <p class="text-sm font-medium text-green-600 uppercase tracking-wide">Contact</p>
-                                        <p class="text-lg font-bold text-gray-800">+971 55 177 1251</p>
+                                        <div class="contact-wrapper">
+                                            <span id="contact-placeholder" class="text-gray-700 font-semibold cursor-pointer hover:text-blue-600 transition-colors" onclick="revealContact()">Click to view contact</span>
+                                            <span id="contact-number" class="text-gray-700 font-semibold" style="display: none;">+971 55 177 1251</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -755,7 +819,56 @@
                                     Please read and check each box to acknowledge your agreement to these house rules.
                                 </p>
                             </div>
-                            <div id="rules-list" class="space-y-4"></div>
+                            <div id="rules-list" class="space-y-4">
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-0" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I agree to keep noise levels low and will not host loud music or parties, especially during quiet hours (10 PM - 8 AM).</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-1" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I agree to inform the landlord/coordinator in advance before having any guests over and ensure they follow all house rules.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-2" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I agree not to smoke inside the apartment, including my room, the balcony, or any common areas. Smoking is strictly prohibited.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-3" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I agree to maintain the cleanliness of my room and all shared common areas including kitchen, bathrooms, and living spaces.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-4" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I understand I am responsible for any damages I cause to the property and will bear the cost of repairs immediately.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-5" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I acknowledge that common areas are monitored by CCTV for security purposes and consent to this monitoring.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-6" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I agree to use shared kitchen appliances respectfully, clean after use, and coordinate with other flatmates.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-7" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I agree to respect other tenants' privacy and personal belongings and will not enter other tenants' rooms without permission.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-8" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I understand that subletting or allowing unauthorized persons to stay overnight is strictly prohibited.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-9" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I agree to follow all UAE laws and regulations and understand that any illegal activities will result in immediate termination.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-10" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I agree to keep common areas tidy and will participate in a cleaning rotation schedule if implemented.</span>
+                                </label>
+                                <label class="flex items-start space-x-3 p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+                                    <input id="rule-11" type="checkbox" class="rule-checkbox mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                                    <span class="text-sm text-gray-700 leading-relaxed">I understand that excessive utility usage may result in additional charges, and I will use utilities responsibly.</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                     
@@ -836,7 +949,9 @@
                                     </p>
                                     <p class="text-sm text-gray-800 flex items-center">
                                         <span class="w-3 h-3 bg-green-500 rounded-full mr-3 flex-shrink-0"></span>
-                                        <strong class="mr-2">Contact:</strong> <span>+971 55 177 1251</span>
+                                        <strong class="mr-2">Contact:</strong> 
+                                        <span id="preview-contact-placeholder" class="cursor-pointer hover:text-blue-600 transition-colors" onclick="revealContact()">Click to view contact</span>
+                                        <span id="preview-contact-number" style="display: none;">+971 55 177 1251</span>
                                     </p>
                                 </div>
                             </div>
@@ -937,13 +1052,14 @@
     </div>
 
     <!-- Modern Footer -->
-    <footer class="mt-16 no-print mx-4 lg:mx-8 mb-8">
-        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-            <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 p-6">
-                <h3 class="text-2xl font-bold text-white text-center">Important Legal Notice</h3>
-            </div>
-            <div class="p-8">
-                <div class="max-w-4xl mx-auto text-center">
+    <footer class="mt-16 no-print">
+        <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 p-6">
+                    <h3 class="text-2xl font-bold text-white text-center">Important Legal Notice</h3>
+                </div>
+                <div class="p-8">
+                    <div class="text-center">
                     <div class="space-y-6 text-sm leading-relaxed">
                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                             <p class="flex items-center justify-center text-blue-800 font-medium">
@@ -982,6 +1098,20 @@
             const form = document.getElementById('rental-form');
             const generateButton = document.getElementById('generate-button');
             const printOutput = document.getElementById('print-output');
+            
+            // Contact reveal function
+            window.revealContact = function() {
+                const formPlaceholder = document.getElementById('contact-placeholder');
+                const formNumber = document.getElementById('contact-number');
+                const previewPlaceholder = document.getElementById('preview-contact-placeholder');  
+                const previewNumber = document.getElementById('preview-contact-number');
+                
+                // Hide placeholders and show numbers
+                if (formPlaceholder) formPlaceholder.style.display = 'none';
+                if (formNumber) formNumber.style.display = 'inline';
+                if (previewPlaceholder) previewPlaceholder.style.display = 'none';
+                if (previewNumber) previewNumber.style.display = 'inline';
+            };
             
             const fields = {
                 tenantName: document.getElementById('tenant-name'),
@@ -1030,29 +1160,19 @@
             };
 
             const houseRules = [
-                "I agree to keep noise levels low and will not host loud music or parties, especially during quiet hours (10 PM - 8 AM).",
-                "I agree to inform the landlord/coordinator in advance before having any guests over and ensure they follow all house rules.",
-                "I agree not to smoke inside the apartment, including my room, the balcony, or any common areas. Smoking is strictly prohibited.",
-                "I agree to maintain the cleanliness of my room and all shared common areas including kitchen, bathrooms, and living spaces.",
-                "I understand I am responsible for any damages I cause to the property and will bear the cost of repairs immediately.",
-                "I acknowledge that common areas are monitored by CCTV for security purposes and consent to this monitoring.",
-                "I agree to use shared kitchen appliances respectfully, clean after use, and coordinate with other flatmates.",
-                "I agree to respect other tenants' privacy and personal belongings and will not enter other tenants' rooms without permission.",
-                "I understand that subletting or allowing unauthorized persons to stay overnight is strictly prohibited.",
-                "I agree to follow all UAE laws and regulations and understand that any illegal activities will result in immediate termination.",
-                "I agree to keep common areas tidy and will participate in a cleaning rotation schedule if implemented.",
-                "I understand that excessive utility usage may result in additional charges, and I will use utilities responsibly."
+                "I agree to keep noise levels low, especially during quiet hours (10 PM - 8 AM).",
+                "I agree to inform the landlord before having guests and ensure they follow house rules.",
+                "I agree not to smoke inside the apartment, room, balcony, or any common areas.",
+                "I agree to maintain cleanliness of my room and shared common areas.",
+                "I understand I am responsible for any damages I cause to the property.",
+                "I agree to use shared kitchen appliances respectfully and clean after use.",
+                "I agree to respect other tenants' privacy and will not enter their rooms without permission.",
+                "I understand that subletting or unauthorized overnight guests are strictly prohibited.",
+                "I agree to follow all UAE laws and understand illegal activities result in immediate termination.",
+                "I agree to report any maintenance issues or damages to the landlord immediately.",
+                "I understand that utility bills are my responsibility and must be paid on time.",
+                "I agree to give 30 days written notice before vacating the premises."
             ];
-            
-            const rulesListContainer = document.getElementById('rules-list');
-            houseRules.forEach((rule, index) => {
-                const ruleId = `rule-${index}`;
-                rulesListContainer.innerHTML += `
-                    <label class="flex items-start space-x-3 p-4 bg-white/50 rounded-lg border border-white/20 cursor-pointer hover:bg-white/70 hover:border-white/40 transition-all group">
-                        <input id="${ruleId}" type="checkbox" class="rule-checkbox mt-1" required>
-                        <span class="text-sm text-gray-700 leading-relaxed group-hover:text-gray-800 transition-colors">${rule}</span>
-                    </label>`;
-            });
             
             const ruleCheckboxes = document.querySelectorAll('.rule-checkbox');
 
@@ -1072,7 +1192,7 @@
                 // Update basic information
                 previews.date.textContent = formatDate(new Date().toISOString().split('T')[0]);
                 
-                // Update tenant information
+                // Update tenant information directly (no privacy protection in preview)
                 previews.tenantName.textContent = fields.tenantName?.value || '[Tenant Name]';
                 previews.tenantId.textContent = fields.tenantId?.value || '[ID Number]';
                 previews.tenantContact.textContent = fields.tenantContact?.value || '[Contact]';
@@ -1231,10 +1351,6 @@
             };
 
             const generatePrintableAgreement = () => {
-                // Debug logging
-                console.log('Generating printable agreement...');
-                console.log('Fields:', fields);
-                
                 const rent = parseFloat(fields.monthlyRent?.value) || 0;
                 const charges = parseFloat(fields.additionalCharges?.value) || 0;
                 const total = rent + charges;
@@ -1252,10 +1368,6 @@
                 const propertyLocation = fields.propertyLocation?.value || 'Apartment 820, Nook 1, Jebel Ali Village, Dubai';
                 const contractStartDate = fields.contractStartDate?.value || '';
                 const securityDeposit = parseFloat(fields.securityDeposit?.value) || 0;
-
-                console.log('Data prepared for printing:', {
-                    tenantName, tenantId, roomType, total, securityDeposit
-                });
 
                 const content = `
                     <div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 100%; margin: 0; background: white; color: #1F2937; line-height: 1.4; font-size: 10pt;">
@@ -1283,18 +1395,18 @@
                                     <h3 style="color: #1E293B; font-size: 0.95rem; font-weight: 600; margin: 0 0 0.75rem 0; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">🏠</span>Landlord</h3>
                                     <div>
                                         <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Name:</strong> BAIJNATH JAISWAL</p>
-                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Contact:</strong> +971 55 177 1251</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Contact:</strong> [Contact available in live view]</p>
                                     </div>
                                 </div>
                                 <div style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border: 1px solid #E2E8F0;">
                                     <h3 style="color: #1E293B; font-size: 0.95rem; font-weight: 600; margin: 0 0 0.75rem 0; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">👤</span>Tenant</h3>
                                     <div>
                                         <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Name:</strong> ${tenantName}</p>
-                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>ID:</strong> ${tenantId}</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>ID:</strong> [ID available in live view]</p>
                                         <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Nationality:</strong> ${tenantNationality}</p>
                                         <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Visa:</strong> ${tenantVisaStatus}</p>
-                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Contact:</strong> ${tenantContact}</p>
-                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Email:</strong> ${tenantEmail}</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Contact:</strong> [Contact available in live view]</p>
+                                        <p style="margin: 0.2rem 0; color: #475569; font-size: 0.85rem;"><strong>Email:</strong> [Email available in live view]</p>
                                     </div>
                                 </div>
                             </div>
@@ -1408,7 +1520,6 @@
                     </div>
                 `;
                 printOutput.innerHTML = content;
-                console.log('Print content generated:', content.substring(0, 200) + '...');
             };
 
             form.addEventListener('input', () => {
@@ -1470,53 +1581,64 @@
                         });
                     });
                     
-                    observer.observe(element, {
-                        childList: true,
-                        characterData: true,
-                        subtree: true
-                    });
-                });
-            };
-            
-            // Enhanced error handling and user feedback
-            const addFieldValidationFeedback = () => {
-                const requiredFields = [
-                    fields.tenantName,
-                    fields.tenantId,
-                    fields.tenantContact,
-                    fields.tenantEmail,
-                    fields.tenantNationality,
-                    fields.tenantVisaStatus,
-                    fields.roomType,
-                    fields.contractStartDate,
-                ];
-                
-                requiredFields.forEach(field => {
-                    if (field) {
-                        field.addEventListener('blur', () => {
-                            if (field.required && !field.value.trim()) {
-                                field.classList.add('border-red-500', 'bg-red-50');
-                                setTimeout(() => {
-                                    field.classList.remove('border-red-500', 'bg-red-50');
-                                }, 2000);
-                            }
-                        });
-                        
-                        field.addEventListener('focus', () => {
-                            field.classList.remove('border-red-500', 'bg-red-50');
-                        });
+                    if (element) {
+                        observer.observe(element, { childList: true, characterData: true, subtree: true });
                     }
                 });
             };
 
-            generateButton.addEventListener('click', () => {
+
+
+        // Observe form changes for enhanced user experience
+        const observeFormChanges = () => {
+            const formElements = document.querySelectorAll('input, select, textarea');
+            formElements.forEach(element => {
+                // Add event listeners for real-time feedback
+                element.addEventListener('change', () => {
+                    // Form element changed
+                });
+            });
+        };
+
+        // Add field validation feedback
+        const addFieldValidationFeedback = () => {
+            const requiredFields = [
+                fields.tenantName,
+                fields.tenantId,
+                fields.tenantContact,
+                fields.tenantEmail,
+                fields.tenantNationality,
+                fields.tenantVisaStatus,
+                fields.roomType,
+                fields.contractStartDate,
+            ];
+            
+            requiredFields.forEach(field => {
+                if (field) {
+                    field.addEventListener('blur', () => {
+                        if (field.required && !field.value.trim()) {
+                            field.classList.add('border-red-500', 'bg-red-50');
+                            setTimeout(() => {
+                                field.classList.remove('border-red-500', 'bg-red-50');
+                            }, 2000);
+                        }
+                    });
+                    
+                    field.addEventListener('focus', () => {
+                        field.classList.remove('border-red-500', 'bg-red-50');
+                    });
+                }
+            });
+        };
+
+        // Generate button event listener
+        generateButton.addEventListener('click', () => {
                 if (!form.checkValidity()) {
                     form.reportValidity();
                     showNotification('Please fill in all required fields.', 'error');
                     return;
                 }
                 
-                console.log('Generate button clicked');
                 generatePrintableAgreement();
                 
                 // Show the print output temporarily to verify content
@@ -1526,7 +1648,6 @@
                 showNotification('Agreement generated successfully! Print dialog will open automatically.', 'success');
                 
                 setTimeout(() => {
-                    console.log('Opening print dialog...');
                     window.print();
                     
                     // Hide again after printing
@@ -1557,15 +1678,14 @@
             };
 
             // Initial calls
-            console.log('Initializing enhanced form...');
             updatePreview();
             validateForm();
             observeStatusChanges();
+            observeFormChanges();
             addFieldValidationFeedback();
 
             // Force update preview after a short delay to ensure DOM is ready
             setTimeout(() => {
-                console.log('Force updating preview...');
                 updatePreview();
                 validateForm();
             }, 100);
